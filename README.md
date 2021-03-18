@@ -53,7 +53,7 @@ ShowError ()
     printf "\\033[1;31m    ***Error: $1 !***\\033[0m\n"
 }
 
-# show error information : 绿色信息
+# show info information : 绿色信息
 ShowInfo ()
 {
     Install_Time=$(date +%Y-%m-%d-%H:%M:%S)
