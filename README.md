@@ -6,9 +6,9 @@
 记录特殊场景下的异常处理 (字符或者sed模式空间的匹配问题，跨平台语法区别问题ksh bash等)
 
 ### 目录结构
-|----commonFunction
-|----exceptionCase
-|----patternMethods
+##### |----commonFunction
+##### |----exceptionCase
+##### |----patternMethods
 
 ### 测试使用环境
 bash shell
