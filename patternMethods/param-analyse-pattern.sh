@@ -59,7 +59,7 @@ function paramAna()
                 GLOBAL_UPDATE_MODE=`getValueName $params`
                 ;;
             "--help")
-                GLOBAL_IS_NEED_HELP="yes"
+                GLOBAL_IS_NEED_HELP=`getValueName $params`
                 ;;
             *)
             GLOBAL_IS_NEED_HELP="yes"
