@@ -35,40 +35,46 @@ GLOBAL_PRODUCT_TYPE="SSSSS"
 GLOBAL_SERVICE_NAME=```
 
 #定义日志级别 和输出路径
-LOG_INFO=INFO
-LOG_ERROR=ERROR
-LOG_WARN=WARN
-LOG_FILE="${GLOBAL_CURRENT_WORKBENCH}/logs/test.log"
+# 1 日志级别
+GLOBAL_LOG_INFO=INFO
+GLOBAL_LOG_WARN=WARN
+GLOBAL_LOG_ERROR=ERROR
+
+# 不同类型的变量之间定义，空一行
+# 2 指定日志的输出目录，复杂场景需要添加 时间后缀
+GLOBAL_LOG_OUTFILE="`pwd`/output.log"
+
 
 # 导出 公共函数
 . common-function.sh
 
-# 定义脚本中独有函数
+# 定义脚本中独有函数(约定 所有的函数采用驼峰命名法，约定所有的脚本名称log-process.sh 的命名方法)
 
 # show error information : 红色信息
-ShowError ()
+function echoError()
 {
-    Install_Time=$(date +%Y-%m-%d-%H:%M:%S)
-    echo "${Install_Time} ${LOG_ERROR}: [${SERVER_NAME}] $1" >> ${LOG_FILE}
-    printf "\\033[1;31m    ***Error: $1 !***\\033[0m\n"
+    # 局部变量的使用，可以在特殊场景下可以屏蔽全局变量在使用中，被串改值的问题
+    local local_current_time=$(date +%Y-%m-%d-%H:%M:%S)
+    echo "${local_current_time} ${GLOBAL_LOG_ERROR}: [${GLOBAL_MODULE_NAME}] $1" >> ${GLOBAL_LOG_OUTFILE}
+    printf "\\033[1;31m    ***Error: $1 !***\\033[0m\n" # 红色显示
 }
 
 # show info information : 绿色信息
-ShowInfo ()
+function echoInfo()
 {
-    Install_Time=$(date +%Y-%m-%d-%H:%M:%S)
-    echo "${Install_Time} ${LOG_INFO}: [${SERVER_NAME}] $1" >> ${LOG_FILE}
-    printf "\\033[1;32m $1 \\033[0m\n"
+    local local_current_time=$(date +%Y-%m-%d-%H:%M:%S)
+    echo "${local_current_time} ${GLOBAL_LOG_INFO}: [${GLOBAL_MODULE_NAME}] $1" >> ${GLOBAL_LOG_OUTFILE}
+    printf "\\033[1;32m $1 \\033[0m\n" # 绿色显示
 }
 
 
 # common function
-##check left space
-function check_space()
+##check left space 
+function checkSpace()
 {
-    local LOCAL_LEFT=`df -h ./ | awk '{print $4}' | sed -n '2p' | awk -FG '{print $1}'`
-    if [ ${LOCAL_LEFT} -lt 5 ]; then
-       ShowError "no left space!!"
+    local local_left=`df -h ./ | awk '{print $4}' | sed -n '2p' | awk -FG '{print $1}'`
+    if [ ${local_left} -lt 5 ]; then
+       echoError "no left space!!"
        exit ${FAILED_NO_SPACE}
     fi
 }
@@ -76,8 +82,8 @@ function check_space()
 # 控制脚本执行流程函数 main
 function main()
 {
-    ParamAna $@
-    checkParm
+    ParamAna $@  # 参数解析
+    checkParm    # 动作分发
 }
 
 # 一切开始的地方
