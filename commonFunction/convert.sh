@@ -6,7 +6,7 @@
 #        转换函数封装
 #
 #Author:
-#    1014263039@qq.com  ---jjy
+#    1014263039@qq.com
 #
 #Creating Time:
 #    2021-03-21
